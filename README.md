@@ -1,1 +1,1 @@
-# -Junior-Python-Backend-Developer
+# Junior-Python-Backend-Developer
