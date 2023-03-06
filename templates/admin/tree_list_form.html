@@ -1,0 +1,34 @@
+{% extends "admin/change_list.html" %}
+
+{% block extrastyle %}
+{{ block.super }}
+{% endblock extrastyle %}
+
+{% block result_list %}
+{% if "menu" in request.GET %}
+    {{ block.super }}
+{% else %}
+<div class="results">
+    <table id="result_list">
+    <thead>
+    <tr>
+    
+    <th scope="col" class="column-indent_name">
+       
+       <div class="text"><span>Menu name</span></div>
+       <div class="clear"></div>
+    </th>
+    </tr>
+    </thead>
+    <tbody>
+    
+    {% for c in Menu %}
+        <tr><th class="field-indent_name"><a href="?menu={{ c.slug }}">{{ c.title }}</a></th></tr>
+    {% endfor %}
+
+    
+    </tbody>
+    </table>
+    </div>
+{% endif %}
+{% endblock result_list %}

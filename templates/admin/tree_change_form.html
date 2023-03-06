@@ -1,0 +1,71 @@
+{% extends "admin/change_form.html" %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .field-parent {
+        display: none;
+    }
+</style>
+{% endblock extrastyle %}
+
+{% block admin_change_form_document_ready %}
+{{ block.super }}
+
+<script>
+    let menu = document.getElementById("id_menu")
+    let parent = document.querySelector(".field-parent")
+    let parent_select = document.getElementById("id_parent")
+    menu.addEventListener("change", (e) => {
+        if (e.target.value) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `/get_menu_data/${e.target.value}/`);
+            xhr.send();
+            xhr.responseType = "json";
+            xhr.onload = () => {
+            var arrOptions = [];
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = xhr.response;
+                data.forEach((element) => {
+                    arrOptions.push(`<option value='${element[0]}'>${element[1]}</option>`);
+                });
+            } else {
+                console.log(`Error: ${xhr.status}`);
+            }
+            parent_select.innerHTML = arrOptions.join();
+            };
+            parent.style.display = "block"
+        } else {
+            parent.style.display = "none"
+        }
+    })
+    {% if change %}
+    document.addEventListener("DOMContentLoaded", () => {
+        let menu = document.getElementById("id_menu")
+        let parent = document.querySelector(".field-parent")
+        let parent_select = document.getElementById("id_parent")
+        if (menu.value) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `/get_menu_data/${menu.value}/`);
+            xhr.send();
+            xhr.responseType = "json";
+            xhr.onload = () => {
+            var arrOptions = [];
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = xhr.response;
+                data.forEach((element) => {
+                    arrOptions.push(`<option value='${element[0]}'>${element[1]}</option>`);
+                });
+            } else {
+                console.log(`Error: ${xhr.status}`);
+            }
+            parent_select.innerHTML = arrOptions.join();
+            };
+            parent.style.display = "block"
+        } else {
+            parent.style.display = "none"
+        }
+    });
+    {% endif %}
+</script>
+{% endblock admin_change_form_document_ready %}
